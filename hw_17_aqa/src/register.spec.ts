@@ -33,14 +33,12 @@ describe('Registration form', () => {
 		'Daria Filko_88',                               // username
 		'Dar',                                          // username_3symb
 		'qwertyuiopasdfghjklzxcvbnmqwertyuiopasdf',     // username_40symb
-		'qwertyuiopasdfghjklzxcvbnmqwertyuiopasd11',    // username_41symb -> it's not possible to type 41st
 	];
 
 	const validPassword = [
 		'12345_D@ria_6789',                             // password
 		'12345Dar',                                     // password_8symb
 		'123_Daria_456 qwerty',                         // password_20symb
-		'123_Daria_456 qwert11',                        // password_21symb -> it's not possible to type 21st
 	];
 	
 	const invalidUsername = [
@@ -152,6 +150,26 @@ describe('Registration form', () => {
 			});
 			// TODO -> bug has been catched -> password field validates w/o uppercase letter
 		}
+
+		it('Check username input limits for typing overlong Username (41 symb)', async () => {
+			const username_41symb = 'qwertyuiopasdfghjklzxcvbnmqwertyuiopasd11';
+
+			const usernameInput = await $(selUsernameInputOnRegister);
+			await usernameInput.setValue(username_41symb);
+			
+			const actualInputValue = await usernameInput.getValue();
+			expect(actualInputValue.length).toEqual(40);
+		});
+
+		it('Check password input limits for typing overlong Password (21 symb)', async () => {
+			const password_21symb = '123_Daria_456 qwert11';
+
+			const passwordInput = await $(selPasswordInputOnRegister);
+			await passwordInput.setValue(password_21symb);
+			
+			const actualInputValue = await passwordInput.getValue();
+			expect(actualInputValue.length).toEqual(20);
+		});
 
 		it('Registration with already registered user data', async () => {
 			const randomNumber = Math.floor(Math.random() * validUsername.length);
