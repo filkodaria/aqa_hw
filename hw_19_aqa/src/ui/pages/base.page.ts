@@ -43,4 +43,9 @@ export abstract class BasePage {
 		await element.selectByVisibleText(value);
 	}
 
+	protected async clearCookie(value: string) {
+		await browser.deleteCookie(value);
+    await browser.refresh();
+	}
+
 }

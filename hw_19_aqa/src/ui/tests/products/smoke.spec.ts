@@ -1,8 +1,12 @@
 import { generateNewProduct } from '../../../data/products/generateProduct.js';
 import { AddProductService } from '../../services/products/addNewProduct.service.js';
 import { ProductListService } from '../../services/products/products.service.js';
+import { LoginService } from '../../services/signIn/login.service.js';
+import { HomeService } from '../../services/home/home.service.js';
 
 describe('[UI] [Products] Smoke tests', () => {
+	const userService = new LoginService();
+	const homeService = new HomeService();
 	const productsService = new ProductListService();
 	const addProductService = new AddProductService();
 
@@ -13,15 +17,12 @@ describe('[UI] [Products] Smoke tests', () => {
 	beforeEach(async () => {
 		await browser.url('https://anatoly-karpovich.github.io/aqa-course-project/#');
 
-		await $('#emailinput').setValue('aqacourse@gmail.com');
-		await $('#passwordinput').setValue('password');
-		await $('button.btn-lg').click();
-		await $('div.spinner-border').waitForDisplayed({ reverse: true });	
+		await userService.adminLogin();
+		await homeService.openProductsPage();
+	});
 
-		await $('button#products-from-home').click();
-		await $('div.spinner-border').waitForDisplayed({ reverse: true });	
-
-		expect('h2.ml-20').toHaveText('Products List');
+	afterEach(async () => {
+		await userService.signOut();
 	});
 
 	it('Check a new product creation', async () => {

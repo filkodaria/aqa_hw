@@ -3,7 +3,9 @@ import { IProduct } from "../../../data/types/products.types.js";
 import { AddNewProductPage } from "../../pages/products/addNewProduct.page.js";
 
 export class AddProductService {
-	constructor(private addNewProductPage = new AddNewProductPage()) { };
+	constructor(
+		private addNewProductPage = new AddNewProductPage()
+	) { };
 	
 	async fillProductInputs(product: Partial<IProduct>) {
 		await this.addNewProductPage.fillInputs(product);

@@ -1,7 +1,9 @@
 import { ProductsPage } from "../../pages/products/products.page.js";
 
 export class ProductListService {	
-	constructor(private productsPage = new ProductsPage()) { };
+	constructor(
+		private productsPage = new ProductsPage()
+	) { };
 	
 	async openAddNewProductPage() {
 		await this.productsPage.clickOnAddNewProductButton();
